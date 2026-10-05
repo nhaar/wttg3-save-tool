@@ -1,0 +1,13 @@
+{
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^26.4.0",
+    "@yao-pkg/pkg": "^6.23.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "scripts": {
+    "start": "tsx main.ts",
+    "build-win": "tsc&&pkg dist/main.js -o out/WTTG3SaveTool.exe -t node22-win-x64"
+  }
+}

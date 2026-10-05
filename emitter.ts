@@ -1,0 +1,359 @@
+import { asciiToUint8Array, type KeyRevealMethod, type Page, type Save, type Site, type Wiki } from "./parser";
+
+function emitPage(page: Page): Uint8Array {
+  return new Uint8Array([
+    ...emitStrProperty('Filename', page.Filename, new Uint8Array([
+      0x00, 0x0C, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x00, 0x0B, 0x00, 0x00, 0x00
+    ])),
+    ...emitBoolProperty('Bookmarked', page.Bookmarked, new Uint8Array([
+      0x00, 0x0D, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x0E, 0x00, 0x00, 0x00
+    ])),
+    ...emitNullableStrProperty('BookmarkTitle', page.BookmarkTitle, new Uint8Array([
+      0x00, 0x0C, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x00, 0x0C, 0x00, 0x00, 0x00
+    ])),
+    ...emitNullableStrProperty('BookmarkURL', page.BookmarkURL, new Uint8Array([
+      0x00, 0x0C, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x00, 0x07, 0x00, 0x00, 0x00
+    ])),
+    ...emitBoolProperty('HasKey', page.HasKey, new Uint8Array([
+      0x00, 0x0D, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x0D, 0x00, 0x00, 0x00
+    ])),
+    ...emitKeyRevealMethod('RevealMethod', page.RevealMethod, new Uint8Array([
+      0x00, 0x0D, 0x00, 0x00, 0x00
+    ]), 0x09),
+    ...emitNullableStrProperty('KeyValue', page.KeyValue, new Uint8Array([
+      0x00, 0x0C, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x00, 0x0D, 0x00, 0x00, 0x00
+    ])),
+    ...emitBoolProperty('HasVideoFile', page.HasVideoFile, new Uint8Array([
+      0x00, 0x0D, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x11, 0x00, 0x00, 0x00
+    ])),
+    ...emitKeyRevealMethod('FileRevealMethod', page.FileRevealMethod, new Uint8Array([
+      0x00, 0x0D, 0x00, 0x00, 0x00
+    ]), 0x0D),
+    ...emitNullableStrProperty('VideoFileURL', page.VideoFileURL, new Uint8Array([
+      0x00, 0x0C, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x00, 0x05, 0x00, 0x00, 0x00
+    ]))
+  ]);
+}
+
+function emitSite(site: Site): Uint8Array {
+  return new Uint8Array([
+    ...emitStrProperty('Name', site.Name, new Uint8Array([
+      0x00, 0x0C, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x00, 0x05, 0x00, 0x00, 0x00
+    ])),
+    ...emitBoolProperty('Fake', site.Fake, new Uint8Array([
+      0x00, 0x0D, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x04, 0x00, 0x00, 0x00
+    ])),
+    ...emitStrProperty('URL', site.URL, new Uint8Array([
+      0x00, 0x0C, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x00, 0x08, 0x00, 0x00, 0x00
+    ])),
+    ...emitBoolProperty('Visited', site.Visited, new Uint8Array([
+      0x00, 0x0D, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x07, 0x00, 0x00, 0x00
+    ])),
+    ...emitBoolProperty('Seized', site.Seized, new Uint8Array([
+      0x00, 0x0D, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x07, 0x00, 0x00, 0x00
+    ])),
+    ...emitBoolProperty('HasKey', site.HasKey, new Uint8Array([
+      0x00, 0x0D, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x0A, 0x00, 0x00, 0x00
+    ])),
+    ...emitNullableStrProperty('KeyString', site.KeyString, new Uint8Array([
+      0x00, 0x0C, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x00, 0x10, 0x00, 0x00, 0x00
+    ])),
+    ...emitKeyRevealMethod('KeyRevealMethod', site.KeyRevealMethod, new Uint8Array([
+      0x00, 0x0D, 0x00, 0x00, 0x00
+    ]), 0x10),
+    ...emitNullableStrProperty('KeyPageFileName', site.KeyPageFileName, new Uint8Array([
+      0x00, 0x0C, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x00, 0x0D, 0x00, 0x00, 0x00
+    ])),
+    ...emitBoolProperty('HasVideoFile', site.HasVideoFile, new Uint8Array([
+      0x00, 0x0D, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x0B, 0x00, 0x00, 0x00
+    ])),
+    ...emitNullableStrProperty('FileString', site.FileString,  new Uint8Array([
+      0x00, 0x0C, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x00, 0x11, 0x00, 0x00, 0x00
+    ])),
+    ...emitKeyRevealMethod('FileRevealMethod', site.FileRevealMethod, new Uint8Array([
+      0x00, 0x0D, 0x00, 0x00, 0x00
+    ]), 0x11),
+    ...emitNullableStrProperty('FilePageFileName', site.FilePageFileName, new Uint8Array([
+      0x00, 0x0C, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x00, 0x06, 0x00, 0x00, 0x00
+    ])),
+    ...emitArrayStructProperty('Pages', [0x00, 0x0E, 0x00, 0x00, 0x00], site.Pages, 'SavedWebPage', 0x09, 0x05, [0x09, 0x00, 0x00, 0x00], [0x05, 0x00, 0x00, 0x00], [0x00, 0x01, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00], emitPage)
+  ])
+}
+
+function to5LE(num: number): [number, number, number, number, number] {
+  return [
+    num & 0xff,
+    (num >> 8) & 0xff,
+    (num >> 16) & 0xff,
+    (num >> 24) & 0xff,
+    0x00 // theoretically should add support for this, not needed yet
+  ];
+}
+
+function to4LE(num: number): [number, number, number, number] {
+  return [
+    num & 0xff,
+    (num >> 8) & 0xff,
+    (num >> 16) & 0xff,
+    (num >> 24) & 0xff
+  ];
+}
+
+
+
+function emitStrProperty(
+  name: string,
+  str: string,
+  signature: Uint8Array,
+  signature2: Uint8Array
+): Uint8Array {
+  return new Uint8Array([
+    ...asciiToUint8Array(name),
+    ...signature,
+    ...asciiToUint8Array('StrProperty'),
+    0x00, 0x00, 0x00, 0x00, 0x00,
+    ...to4LE(str.length + 5),
+    0x00,
+    ...to4LE(str.length + 1),
+    ...asciiToUint8Array(str),
+    ...signature2
+  ]);
+}
+
+function emitNullableStrProperty(
+  name: string,
+  str: string | null,
+  signature: Uint8Array,
+  signature2: Uint8Array
+): Uint8Array {
+  return new Uint8Array([
+    ...asciiToUint8Array(name),
+    ...signature,
+    ...asciiToUint8Array('StrProperty'),
+    0x00, 0x00, 0x00, 0x00, 0x00,
+    ...to4LE(str === null ? 4 : (str.length + 5)),
+    ...(str === null ? [] : [0x00]),
+    ...to4LE(str === null ? 0 : str.length + 1),
+    ...str === null ? [] : asciiToUint8Array(str),
+    ...signature2
+  ]);
+}
+
+function emitBoolProperty(
+  name: string,
+  value: boolean,
+  signature1: Uint8Array,
+  signature2: Uint8Array
+): Uint8Array {
+  return new Uint8Array([
+    ...asciiToUint8Array(name),
+    ...signature1,
+    ...asciiToUint8Array('BoolProperty'),
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    value ? 0x10 : 0x00,
+    ...signature2
+  ])
+}
+
+function emitKeyRevealMethod(name: string, key: KeyRevealMethod, signature: Uint8Array, signature2: number): Uint8Array {
+  const method = {
+    'cptag': 'CP_TAG',
+    'cftag': 'CF_TAG',
+    'ptag': 'P_TAG',
+    'none': 'NOT_SET',
+    'sourcecode': 'SOURCE_CODE'
+  }[key];
+
+  const signatureMethod = {
+    'cptag': [0x00, 0x00, 0x00, 0x00, 0x00, 0x24, 0x00, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00],
+    'cftag': [0x00, 0x00, 0x00, 0x00, 0x00, 0x24, 0x00, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00],
+    'ptag': [0x00, 0x00, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x00, 0x1F, 0x00, 0x00, 0x00],
+    'none': [0x00, 0x00, 0x00, 0x00, 0x00, 0x25, 0x00, 0x00, 0x00, 0x00, 0x21, 0x00, 0x00, 0x00],
+    'sourcecode': [0x00, 0x00, 0x00, 0x00, 0x00, 0x29, 0x00, 0x00, 0x00, 0x00, 0x25, 0x00, 0x00, 0x00]
+  }[key];
+
+  return new Uint8Array([
+    ...asciiToUint8Array(name),
+    ...signature,
+    ...asciiToUint8Array('EnumProperty'),
+    0x00, 0x02, 0x00, 0x00, 0x00, 0x18, 0x00, 0x00, 0x00,
+    ...asciiToUint8Array('EWebSiteTapRevealMethod'),
+    0x00, 0x01, 0x00, 0x00, 0x00, 0x0F, 0x00, 0x00, 0x00,
+    ...asciiToUint8Array('/Script/WTTGSD'),
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00,
+    ...asciiToUint8Array('ByteProperty'),
+    ...signatureMethod,
+    ...asciiToUint8Array('EWebSiteTapRevealMethod::' + method),
+    0x00, signature2, 0x00, 0x00, 0x00
+  ])
+}
+
+function emitArrayStructProperty<T>(
+  name: string,
+  signature: number[],
+  members: T[],
+  structName: string,
+  delim: number,
+  last: number,
+  signature2: number[],
+  emptySignature: number[],
+  signature3: number[],
+  emiter: (m: T) => Uint8Array
+): Uint8Array {
+  const membersBytes = members.flatMap((m, i) => [
+    ...emiter(m),
+    0x4E, 0x6F, 0x6E, 0x65, 0x00, i == members.length - 1 ? last : delim, 0x00, 0x00, 0x00
+  ]);
+
+  return new Uint8Array([
+    ...asciiToUint8Array(name),
+    ...signature,
+    // ArrayProperty
+    0x41, 0x72, 0x72, 0x61, 0x79, 0x50, 0x72, 0x6F, 0x70, 0x65, 0x72, 0x74, 0x79,
+    // unknown bytes, hardcoded
+    0x00, 0x01, 0x00, 0x00, 0x00, 0x0F, 0x00, 0x00, 0x00,
+    // StructProperty
+    0x53, 0x74, 0x72, 0x75, 0x63, 0x74, 0x50, 0x72, 0x6F, 0x70, 0x65, 0x72, 0x74, 0x79,
+    // unknown hardcoded
+    ...signature3,
+    ...asciiToUint8Array(structName),
+    // unknown hardcoded
+    0x00, 0x01, 0x00, 0x00, 0x00, 0x0F, 0x00, 0x00, 0x00,
+    // /Script/WTTGSD,
+    0x2F, 0x53, 0x63, 0x72, 0x69, 0x70, 0x74, 0x2F, 0x57, 0x54, 0x54, 0x47, 0x53, 0x44,
+    // unknown padding
+    0x00, 0x00, 0x00, 0x00, 0x00,
+    ...to5LE(membersBytes.length + 4),
+    ...to4LE(members.length),
+    // unknown hardcoded
+    ...(members.length === 0 ? emptySignature : signature2),
+    ...membersBytes
+  ]);
+}
+
+function emitSavedSites(sites: Site[]): Uint8Array {
+  return new Uint8Array([
+    ...emitArrayStructProperty('SavedSites', [0x00, 0x0E, 0x00, 0x00, 0x00], sites, 'SavedWebSite', 0x05, 0x0B, [0x05, 0x00, 0x00, 0x00], [0x05, 0x00, 0x00, 0x00], [0x00, 0x01, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00], emitSite)
+  ]);
+}
+
+function emitStringArrayProperty(name: string, signature: number[], strs: string[]): Uint8Array {
+  const membersBytes = strs.flatMap((str, i) => [
+    ...to4LE(str.length + 1),
+    ...asciiToUint8Array(str),
+    0x00,
+    ...(  i === strs.length - 1 ? 
+      // [0x05, 0x00, 0x00, 0x00, 0x4E, 0x6F, 0x6E, 0x65, 0x00, 0x05, 0x00, 0x00]
+      [0x05, 0x00, 0x00, 0x00]
+      : [])
+  ]);
+
+  return new Uint8Array([
+    ...asciiToUint8Array(name),
+    ...signature,
+    // ArrayProperty
+    0x41, 0x72, 0x72, 0x61, 0x79, 0x50, 0x72, 0x6F, 0x70, 0x65, 0x72, 0x74, 0x79,
+    // unknown bytes, hardcoded
+    0x00, 0x01, 0x00, 0x00, 0x00, 0x0C, 0x00, 0x00, 0x00,
+    // StructProperty
+    ...asciiToUint8Array('StrProperty'),
+    // unknown padding
+    0x00, 0x00, 0x00, 0x00, 0x00,
+    ...to5LE(membersBytes.length),
+    ...to4LE(strs.length),
+    ...membersBytes
+  ]);
+}
+
+function emitWiki(wiki: Wiki): Uint8Array {
+  return new Uint8Array([
+    ...emitStrProperty('Name', wiki.Name, new Uint8Array([
+      0x00, 0x0C, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x00, 0x04, 0x00, 0x00, 0x00
+    ])),
+    ...emitStrProperty('URL', wiki.URL, new Uint8Array([
+      0x00, 0x0C, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x00, 0x08, 0x00, 0x00, 0x00
+    ])),
+    ...emitBoolProperty('Visited', wiki.Visited, new Uint8Array([
+      0x00, 0x0D, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x07, 0x00, 0x00, 0x00
+    ])),
+    ...emitBoolProperty('Seized', wiki.Seized, new Uint8Array([
+      0x00, 0x0D, 0x00, 0x00, 0x00
+    ]), new Uint8Array([
+      0x06, 0x00, 0x00, 0x00
+    ])),
+    ...emitArrayStructProperty('Pages',
+      [0x00, 0x0E, 0x00, 0x00, 0x00], wiki.Pages, 'SavedWebPage', 0x10, 0x10, [0x09, 0x00, 0x00, 0x00], [0x09, 0x00, 0x00, 0x00], [0x00, 0x01, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00], emitPage),
+    ...emitStringArrayProperty('MemberSiteNames', [0x00, 0x0E, 0x00, 0x00, 0x00], wiki.MemberSiteNames)
+  ])
+}
+
+function emitSavedWikis(wikis: Wiki[]): Uint8Array {
+  return emitArrayStructProperty('SavedWikis', [0x00, 0x0E, 0x00, 0x00, 0x00], wikis, 'SavedWiki', 0x05, 0x05, [0x05, 0x00, 0x00, 0x00], [0x09, 0x00, 0x00, 0x00], [0x00, 0x01, 0x00, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x00], emitWiki)
+}
+
+export function emit(save: Save): Buffer {
+
+  const sitesBytes = emitSavedSites(save.savedSites);
+  const wikiBytes = emitSavedWikis(save.savedWikis);
+
+  const size = save.header2.length + save.header3.length + sitesBytes.length + wikiBytes.length + save.rest.length - 5;
+
+  const websitesSize = sitesBytes.length + wikiBytes.length + 22;
+
+  return Buffer.from([
+    ...save.header1,
+    ...to4LE(size),
+    ...save.header2,
+    ...to4LE(websitesSize),
+    0x00,
+    ...to4LE(websitesSize - 4),
+    ...save.header3,
+    ...sitesBytes,
+    ...wikiBytes,
+    ...save.rest
+  ]);
+}
