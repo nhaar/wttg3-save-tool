@@ -315,10 +315,14 @@ async function generatePracticeFile(): Promise<void> {
 }
 
 async function loop(): Promise<void> {
+  console.log('WTTG3 Save Tool\n');
+  clear();
+  console.log('Options:');
   console.log(`\`save\` - Set save location [current: ${mainProcess.saveDirectory}]`);
   console.log('`peek` - Peek the save data of a savefile');
   console.log('`run` - Generate randomized practice run');
   console.log('`prac` - Generate practice file with all key/files using the same method and every page containing keys and files');
+  console.log();
   console.log('Choose the option: ');
 
   const option = await getOption();
@@ -345,9 +349,6 @@ async function loop(): Promise<void> {
 
 
 async function main() {
-  clear();
-  console.log('WTTG3 practice tool\n');
-
   while(true) {
     await loop();
   }
